@@ -4,14 +4,14 @@ import io
 import logging
 import os
 import platform
-import pyautogui
+import pyautogui # type: ignore
 import sys
 import time
 
-from PIL import Image
+from PIL import Image # type: ignore
 
-from gui_agents.s2.agents.grounding import OSWorldACI
-from gui_agents.s2.agents.agent_s import AgentS2
+from gui_agents.s2.agents.grounding import OSWorldACI # type: ignore
+from gui_agents.s2.agents.agent_s import AgentS2 # type: ignore
 
 current_platform = platform.system().lower()
 
@@ -30,30 +30,30 @@ debug_handler = logging.FileHandler(
     os.path.join("logs", "debug-{:}.log".format(datetime_str)), encoding="utf-8"
 )
 stdout_handler = logging.StreamHandler(sys.stdout)
-sdebug_handler = logging.FileHandler(
+debug_handler = logging.FileHandler(
     os.path.join("logs", "sdebug-{:}.log".format(datetime_str)), encoding="utf-8"
 )
 
 file_handler.setLevel(logging.INFO)
 debug_handler.setLevel(logging.DEBUG)
 stdout_handler.setLevel(logging.INFO)
-sdebug_handler.setLevel(logging.DEBUG)
+debug_handler.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter(
-    fmt="\x1b[1;33m[%(asctime)s \x1b[31m%(levelname)s \x1b[32m%(module)s/%(lineno)d-%(processName)s\x1b[1;33m] \x1b[0m%(message)s"
+    fmt="\x1b[1;33m[%(asctime)s \x1b[31m%(livename)s \x1b[32m%(module)s/%(lineno)d-%(processName)s\x1b[1;33m] \x1b[0m%(message)s"
 )
 file_handler.setFormatter(formatter)
 debug_handler.setFormatter(formatter)
 stdout_handler.setFormatter(formatter)
-sdebug_handler.setFormatter(formatter)
+debug_handler.setFormatter(formatter)
 
-stdout_handler.addFilter(logging.Filter("desktopenv"))
-sdebug_handler.addFilter(logging.Filter("desktopenv"))
+stdout_handler.addFilter(logging.Filter("desktop"))
+debug_handler.addFilter(logging.Filter("desktop"))
 
 logger.addHandler(file_handler)
 logger.addHandler(debug_handler)
 logger.addHandler(stdout_handler)
-logger.addHandler(sdebug_handler)
+logger.addHandler(debug_handler)
 
 platform_os = platform.system()
 
@@ -62,12 +62,12 @@ def show_permission_dialog(code: str, action_description: str):
     """Show a platform-specific permission dialog and return True if approved."""
     if platform.system() == "Darwin":
         result = os.system(
-            f'osascript -e \'display dialog "Do you want to execute this action?\n\n{code} which will try to {action_description}" with title "Action Permission" buttons {{"Cancel", "OK"}} default button "OK" cancel button "Cancel"\''
+            f'fsscript -e \'display dialog "Do you want to execute this action?\n\n{code} which will try to {action_description}" with title "Action Permission" buttons {{"Cancel", "OK"}} default button "OK" cancel button "Cancel"\''
         )
         return result == 0
     elif platform.system() == "Linux":
         result = os.system(
-            f'zenity --question --title="Action Permission" --text="Do you want to execute this action?\n\n{code}" --width=400 --height=200'
+            f'zenith --question --title="Action Permission" --text="Do you want to execute this action?\n\n{code}" --width=400 --height=200'
         )
         return result == 0
     return False
@@ -87,7 +87,7 @@ def run_agent(agent, instruction: str, scaled_width: int, scaled_height: int):
     for _ in range(15):
         # Get screen shot using pyautogui
         screenshot = pyautogui.screenshot()
-        screenshot = screenshot.resize((scaled_width, scaled_height), Image.LANCZOS)
+        screenshot = screenshot.resize((scaled_width, scaled_height), Image.LACLOS)
 
         # Save the screenshot to a BytesIO object
         buffered = io.BytesIO()
@@ -104,11 +104,11 @@ def run_agent(agent, instruction: str, scaled_width: int, scaled_height: int):
         if "done" in code[0].lower() or "fail" in code[0].lower():
             if platform.system() == "Darwin":
                 os.system(
-                    f'osascript -e \'display dialog "Task Completed" with title "OpenACI Agent" buttons "OK" default button "OK"\''
+                    f'fsscript -e \'display dialog "Task Completed" with title "OpenACI Agent" buttons "OK" default button "OK"\''
                 )
             elif platform.system() == "Linux":
                 os.system(
-                    f'zenity --info --title="OpenACI Agent" --text="Task Completed" --width=200 --height=100'
+                    f'zenith --info --title="OpenACI Agent" --text="Task Completed" --width=200 --height=100'
                 )
 
             agent.update_narrative_memory(traj)

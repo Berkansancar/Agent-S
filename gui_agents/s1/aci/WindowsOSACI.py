@@ -4,12 +4,12 @@ import platform
 from typing import Any, Dict, List, Tuple
 
 import numpy as np
-import psutil
-import requests
+import psutil # type: ignore
+import requests # type: ignore
 from gui_agents.s1.utils.common_utils import box_iou
 
 if platform.system() == "Windows":
-    import pywinauto
+    import pywinauto # type: ignore
     from pywinauto import Desktop
     import win32gui
     import win32process

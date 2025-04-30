@@ -1,4 +1,5 @@
 import base64
+from gettext import install
 import logging
 import os
 import time
@@ -13,18 +14,19 @@ from gui_agents.s1.utils.common_utils import box_iou
 import platform
 
 if platform.system() == "Linux":
-    import pyatspi
-    from pyatspi import Accessible, StateType, STATE_SHOWING
-    from pyatspi import Action as ATAction
-    from pyatspi import Component  # , Document
-    from pyatspi import Text as ATText
-    from pyatspi import Value as ATValue
+    import pyatspi # type: ignore
+    
+    from pyatspi import Accessible, StateType, STATE_SHOWING # type: ignore
+    from pyatspi import Action as ATAction # type: ignore
+    from pyatspi import Component  # type: ignore # , Document
+    from pyatspi import Text as ATText # type: ignore
+    from pyatspi import Value as ATValue # type: ignore
 
-    from pyatspi import Accessible, StateType
-    from lxml.etree import _Element
+    from pyatspi import Accessible, StateType # type: ignore
+    from lxml.etree import _Element # type: ignore
     from typing import Optional, Dict, Any, List
 
-    import lxml.etree
+    import lxml.etree # type: ignore
     import concurrent.futures
 
 _accessibility_ns_map_ubuntu = {

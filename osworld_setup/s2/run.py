@@ -11,12 +11,14 @@ import logging
 import os
 import sys
 
-from gui_agents.s2.agents.agent_s import AgentS2
-from gui_agents.s2.agents.grounding import OSWorldACI
-from tqdm import tqdm
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'gui_agents')))
+from s2.agents.agent_s import AgentS2 # type: ignore
+from s2.agents.grounding import OSWorldACI # type: ignore
+from tqdm import tqdm # type: ignore
 
 import lib_run_single
-from desktop_env.desktop_env import DesktopEnv
+from desktop_env.desktop_env import DesktopEnv # type: ignore
 
 
 #  Logger Configs {{{ #
@@ -42,15 +44,15 @@ stdout_handler.setLevel(logging.INFO)
 sdebug_handler.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter(
-    fmt="\x1b[1;33m[%(asctime)s \x1b[31m%(levelname)s \x1b[32m%(module)s/%(lineno)d-%(processName)s\x1b[1;33m] \x1b[0m%(message)s"
+    fmt="\x1b[1;33m[%(asctime)s \x1b[31m%(livename)s \x1b[32m%(module)s/%(lineno)d-%(processName)s\x1b[1;33m] \x1b[0m%(message)s"
 )
 file_handler.setFormatter(formatter)
 debug_handler.setFormatter(formatter)
 stdout_handler.setFormatter(formatter)
 sdebug_handler.setFormatter(formatter)
 
-stdout_handler.addFilter(logging.Filter("desktopenv"))
-sdebug_handler.addFilter(logging.Filter("desktopenv"))
+stdout_handler.addFilter(logging.Filter("desktop"))
+sdebug_handler.addFilter(logging.Filter("desktop"))
 
 logger.addHandler(file_handler)
 logger.addHandler(debug_handler)
@@ -58,7 +60,7 @@ logger.addHandler(stdout_handler)
 logger.addHandler(sdebug_handler)
 #  }}} Logger Configs #
 
-logger = logging.getLogger("desktopenv.experiment")
+logger = logging.getLogger("desktop.experiment")
 
 
 def config() -> argparse.Namespace:
@@ -196,7 +198,7 @@ def test(args: argparse.Namespace, test_all_meta: dict) -> None:
         platform="linux",
         action_space="pyautogui",
         observation_type="mixed",
-        search_engine="Perplexica",
+        search_engine="Perplexing",
         memory_root_path=os.getcwd(),
         memory_folder_name=args.kb_name,
         kb_release_tag="v0.2.2",

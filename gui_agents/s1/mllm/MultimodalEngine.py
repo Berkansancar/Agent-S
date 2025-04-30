@@ -6,7 +6,7 @@ import os
 import re
 from io import BytesIO
 
-import backoff
+import backoff # type: ignore
 import numpy as np
 import openai
 import requests

@@ -1,12 +1,12 @@
 import asyncio
 import os
 import platform
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException # type: ignore
+from fastapi.responses import StreamingResponse # type: ignore
+from pydantic import BaseModel # type: ignore
 from gui_agents.s1.core.AgentS import GraphSearchAgent
 import io
-import pyautogui
+import pyautogui # type: ignore
 import time
 from threading import Event, Lock
 
@@ -232,7 +232,8 @@ async def stop_agent():
     return {"status": "stop signal sent"}
 
 
-import uvicorn
+import uvicorn # type: ignore
+
 
 if __name__ == "__main__":
     uvicorn.run(
